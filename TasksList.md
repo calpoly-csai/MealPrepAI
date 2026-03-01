@@ -1,500 +1,525 @@
 # Tasks List Document
-## AI Powered Meal Prep Application - 9 Week Sprint Plan
+## AI Powered Meal Prep Application - 12 Week Development Plan
 
 ### Project Overview
-- **Duration:** 9 weeks
-- **Team Size:** 11 developers
-- **Methodology:** Agile with 1-week sprints
-- **Total Story Points:** 171 points (~17 points per week)
-- **Team Structure:**
-  - 2 Senior Full-Stack Developers (Tech Leads)
-  - 3 Mobile Developers (React Native)
-  - 3 Backend Developers (Express.js/Node.js)
-  - 2 Frontend/UI Developers
-  - 1 DevOps/QA Engineer
+- **Duration:** 12 weeks
+- **Team Size:** 2 developers (Logan Barker, Zach Mattes)
+- **Methodology:** Agile with iterative development
+- **Goal:** Combine existing codebases and implement AI meal planning features
 
-### GitHub Issue Template
-```markdown
-**Issue Type:** [Feature/Bug/Task/Epic]
-**Story Points:** [1-8]
-**Assignee:** [Developer Name]
-**Sprint:** [Week X]
-**Dependencies:** [List of blocking issues]
-**Acceptance Criteria:**
-- [ ] Criterion 1
-- [ ] Criterion 2
-**Definition of Done:**
-- [ ] Code reviewed and approved
-- [ ] Tests written and passing
-- [ ] Documentation updated
-```
+### Phase 1: Foundation & Setup (Weeks 1-2)
 
-### Week 1: Project Setup & Foundation
-**Sprint Goal:** Establish development environment and basic project structure
-**Team Capacity:** 10 developers × 40 hours = 400 hours
+#### Parallel Track A: Backend Infrastructure
+**ISSUE-001: Express.js Backend Setup**
+- Initialize Express server with TypeScript
+- Configure middleware (CORS, body-parser, error handling)
+- Set up project structure and environment variables
+- **Can work in parallel with:** ISSUE-002, ISSUE-003, ISSUE-004
 
-#### GitHub Issues:
-
-**EPIC-001: Project Infrastructure Setup**
-- **Assignee:** Senior Dev 1 (Tech Lead)
-- **Story Points:** 2
-- **Dependencies:** None
-
-**ISSUE-001: React Native Project Setup**
-- **Assignee:** Mobile Dev 1
-- **Story Points:** 3
-- **Dependencies:** None
-- **Tasks:**
-  - Initialize React Native project with Expo CLI
-  - Configure TypeScript and ESLint
-  - Set up project structure and folder organization
-  - Configure development environment
-
-**ISSUE-002: Express.js Backend Setup**
-- **Assignee:** Backend Dev 1
-- **Story Points:** 3
-- **Dependencies:** None
-- **Tasks:**
-  - Initialize Express.js project with Node.js
-  - Set up basic middleware and CORS
-  - Configure TypeScript for backend
-  - Create basic server structure
-
-**ISSUE-003: MongoDB Database Setup**
-- **Assignee:** Backend Dev 2
-- **Story Points:** 3
-- **Dependencies:** ISSUE-002
-- **Tasks:**
-  - Set up MongoDB Atlas cluster
-  - Install and configure Mongoose
-  - Create basic database schemas (User, Recipe, Inventory)
-  - Set up database connection and environment variables
-
-**ISSUE-004: CI/CD Pipeline Setup**
-- **Assignee:** DevOps Engineer
-- **Story Points:** 5
-- **Dependencies:** ISSUE-001, ISSUE-002
-- **Tasks:**
-  - Set up GitHub Actions for mobile app
-  - Configure backend deployment pipeline
-  - Set up automated testing workflows
-  - Configure environment management
-
-**ISSUE-005: Authentication Integration - Backend**
-- **Assignee:** Backend Dev 1
-- **Story Points:** 4
-- **Dependencies:** ISSUE-003
-- **Tasks:**
-  - Integrate Clerk authentication middleware
-  - Set up JWT token validation
-  - Create user registration/login endpoints
-  - Implement protected route middleware
-
-**ISSUE-006: Authentication Integration - Mobile**
-- **Assignee:** Mobile Dev 2
-- **Story Points:** 4
-- **Dependencies:** ISSUE-001, ISSUE-005
-- **Tasks:**
-  - Integrate Clerk SDK in React Native
-  - Create login/signup screens
-  - Implement secure token storage
-  - Set up navigation guards
-
-**ISSUE-007: UI Component Library**
-- **Assignee:** Frontend Dev 1
-- **Story Points:** 5
+**ISSUE-005: MongoDB Database Setup**
+- Set up MongoDB Atlas cluster
+- Configure Mongoose ODM
+- Create base schemas (User, Recipe, Inventory, MealPlan, Leftovers)
+- Set up database indexes
 - **Dependencies:** ISSUE-001
-- **Tasks:**
-  - Set up NativeBase or React Native Elements
-  - Create reusable components (Button, Input, Card, Modal)
-  - Implement design system and theming
-  - Create component documentation
+- **Can work in parallel with:** ISSUE-006, ISSUE-007
 
-**ISSUE-008: Navigation Setup**
-- **Assignee:** Mobile Dev 3
-- **Story Points:** 3
-- **Dependencies:** ISSUE-007
-- **Tasks:**
-  - Set up React Navigation with tab and stack navigators
-  - Implement basic screen layouts
-  - Create navigation structure
-  - Add navigation guards for authentication
+**ISSUE-008: Clerk Authentication Backend**
+- Integrate Clerk SDK with Express
+- Implement JWT validation middleware
+- Create protected route middleware
+- Set up user session management
+- **Dependencies:** ISSUE-001, ISSUE-005
+- **Can work in parallel with:** ISSUE-009
 
-**ISSUE-009: External API Integration - TheMealDB**
-- **Assignee:** Backend Dev 2
-- **Story Points:** 3
+#### Parallel Track B: Mobile App Foundation
+**ISSUE-002: React Native Project Setup**
+- Initialize Expo project with TypeScript
+- Configure ESLint and Prettier
+- Set up project folder structure
+- Install core dependencies (React Navigation, NativeBase)
+- **Can work in parallel with:** ISSUE-001, ISSUE-003, ISSUE-004
+
+**ISSUE-003: UI Component Library**
+- Set up NativeBase or React Native Elements
+- Create reusable components (Button, Input, Card, Modal)
+- Implement design system and theming
+- Create layout components (Header, TabBar)
 - **Dependencies:** ISSUE-002
-- **Tasks:**
-  - Set up TheMealDB API client
-  - Create API utility functions
-  - Implement error handling and retry logic
-  - Test basic recipe fetching
+- **Can work in parallel with:** ISSUE-001, ISSUE-004
 
-**ISSUE-010: Code Quality Setup**
-- **Assignee:** Senior Dev 2 (Tech Lead)
-- **Story Points:** 2
-- **Dependencies:** ISSUE-001, ISSUE-002
-- **Tasks:**
-  - Configure ESLint and Prettier for both projects
-  - Set up pre-commit hooks
-  - Create coding standards documentation
-  - Set up code review guidelines
+**ISSUE-004: Navigation Framework**
+- Set up React Navigation
+- Implement tab navigator (Home, Recipes, Inventory, Meal Plans, Profile)
+- Create stack navigators for each section
+- Implement authentication guards
+- **Dependencies:** ISSUE-002
+- **Can work in parallel with:** ISSUE-001, ISSUE-003
 
-**Week 1 Total Story Points:** 37 points
+**ISSUE-006: API Integration Layer**
+- Set up React Query for state management
+- Create API client with Axios
+- Implement request/response interceptors
+- Add offline support with AsyncStorage
+- **Dependencies:** ISSUE-002, ISSUE-001
+- **Can work in parallel with:** ISSUE-005, ISSUE-007
 
-### Week 2: User Management & Recipe Foundation
-**Sprint Goal:** Complete user profile management and basic recipe functionality
-**Team Capacity:** 10 developers × 40 hours = 400 hours
+**ISSUE-009: Clerk Authentication Mobile**
+- Integrate Clerk SDK with React Native
+- Create login/signup screens
+- Implement secure token storage (Expo SecureStore)
+- Create authentication context and hooks
+- **Dependencies:** ISSUE-002, ISSUE-008
+- **Can work in parallel with:** ISSUE-008
 
-#### GitHub Issues:
+#### Parallel Track C: External Services
+**ISSUE-007: TheMealDB API Integration**
+- Create TheMealDB API client
+- Implement recipe fetching utilities
+- Add error handling and retry logic
+- Create data transformation functions
+- **Dependencies:** ISSUE-001
+- **Can work in parallel with:** ISSUE-005, ISSUE-006
 
-**ISSUE-011: User Profile Backend API**
-- **Assignee:** Backend Dev 1
-- **Story Points:** 5
+---
+
+### Phase 2: User Management & Profiles (Week 3)
+
+**ISSUE-010: User Profile Schema & API**
+- Implement User model with preferences and schedule fields
+- Create profile CRUD endpoints (GET, PUT /api/users/profile)
+- Create preferences endpoint (PUT /api/users/preferences)
+- Create schedule endpoint (PUT /api/users/schedule)
+- Add input validation with Zod
+- **Dependencies:** ISSUE-005, ISSUE-008
+- **Can work in parallel with:** ISSUE-011
+
+**ISSUE-011: User Profile Mobile Screens**
+- Create profile view screen
+- Create preferences input form (dietary restrictions, cuisines, skill level, budget)
+- Create schedule input interface with time pickers
+- Implement form validation
+- **Dependencies:** ISSUE-009, ISSUE-006
+- **Can work in parallel with:** ISSUE-010
+
+**ISSUE-012: Onboarding Flow**
+- Create welcome screens
+- Implement tutorial/walkthrough
+- Create initial preferences setup wizard
+- Add skip functionality
+- **Dependencies:** ISSUE-011
+- **Can work in parallel with:** Next phase issues
+
+---
+
+### Phase 3: Recipe Management (Weeks 4-5)
+
+#### Parallel Track A: Recipe Backend
+**ISSUE-013: Recipe Schema & API**
+- Implement Recipe model with all fields from LowLevelDesign
+- Create recipe CRUD endpoints (GET, POST, PUT /api/recipes)
+- Implement search and filtering API (GET /api/recipes?search=&cuisine=&category=)
+- Add pagination support
+- Create rating endpoint (PUT /api/recipes/:id/rating)
 - **Dependencies:** ISSUE-005
-- **Tasks:**
-  - Create user profile CRUD endpoints
-  - Implement dietary restrictions and preferences API
-  - Add schedule management endpoints
-  - Create profile validation middleware
+- **Can work in parallel with:** ISSUE-014, ISSUE-015
 
-**ISSUE-012: User Profile Mobile Screens**
-- **Assignee:** Mobile Dev 1
-- **Story Points:** 5
-- **Dependencies:** ISSUE-011, ISSUE-007
-- **Tasks:**
-  - Create user preferences screens
-  - Implement schedule input interface with time pickers
-  - Build profile editing functionality
-  - Add form validation
+**ISSUE-014: Recipe Import System**
+- Create TheMealDB import service
+- Implement data transformation (TheMealDB → Recipe schema)
+- Add batch processing for multiple recipes
+- Implement duplicate detection
+- Create seed script for initial recipe population
+- **Dependencies:** ISSUE-007, ISSUE-013
+- **Can work in parallel with:** ISSUE-013, ISSUE-015
 
-**ISSUE-013: Recipe Database Schema & API**
-- **Assignee:** Backend Dev 2
-- **Story Points:** 4
-- **Dependencies:** ISSUE-009
-- **Tasks:**
-  - Design recipe database schema
-  - Create recipe CRUD endpoints
-  - Implement recipe search and filtering API
-  - Add recipe rating system backend
+**ISSUE-016: Recipe Suggestion API**
+- Create ingredient matching algorithm
+- Implement suggestion endpoint (GET /api/recipes/suggestions?ingredients=)
+- Prioritize recipes using available ingredients
+- Add filtering by user preferences
+- **Dependencies:** ISSUE-013
+- **Can work in parallel with:** ISSUE-017, ISSUE-018
 
-**ISSUE-014: Recipe List Screen**
-- **Assignee:** Mobile Dev 2
-- **Story Points:** 4
-- **Dependencies:** ISSUE-013, ISSUE-008
-- **Tasks:**
-  - Create recipe list screen with search
-  - Implement filtering functionality
-  - Add pull-to-refresh and pagination
-  - Optimize for mobile performance
+#### Parallel Track B: Recipe Mobile
+**ISSUE-015: Recipe List & Search Screen**
+- Create recipe list screen with FlatList
+- Implement search functionality
+- Add filtering UI (cuisine, category, dietary restrictions)
+- Implement pagination and pull-to-refresh
+- **Dependencies:** ISSUE-006, ISSUE-013
+- **Can work in parallel with:** ISSUE-013, ISSUE-014
 
-**ISSUE-015: Recipe Detail Screen**
-- **Assignee:** Mobile Dev 3
-- **Story Points:** 4
-- **Dependencies:** ISSUE-013, ISSUE-008
-- **Tasks:**
-  - Create recipe detail screen
-  - Implement recipe rating interface
-  - Add recipe sharing functionality
-  - Create recipe image gallery
+**ISSUE-017: Recipe Detail Screen**
+- Create recipe detail view
+- Display ingredients, instructions, nutrition info
+- Implement rating interface (1-5 stars)
+- Add sharing functionality
+- Show prep/cook time and difficulty
+- **Dependencies:** ISSUE-015
+- **Can work in parallel with:** ISSUE-016, ISSUE-018
 
-**ISSUE-016: Recipe Card Component**
-- **Assignee:** Frontend Dev 1
-- **Story Points:** 3
-- **Dependencies:** ISSUE-007
-- **Tasks:**
-  - Design recipe card component
-  - Implement responsive layout
-  - Add recipe metadata display
-  - Create loading and error states
+**ISSUE-018: Custom Recipe Creation**
+- Create recipe creation form
+- Implement ingredient input with dynamic fields
+- Add image picker for recipe photos
+- Create instruction step builder
+- Add nutrition info input (optional)
+- **Dependencies:** ISSUE-006, ISSUE-013
+- **Can work in parallel with:** ISSUE-016, ISSUE-017
 
-**ISSUE-017: Recipe Import System**
-- **Assignee:** Backend Dev 1
-- **Story Points:** 4
-- **Dependencies:** ISSUE-009, ISSUE-013
-- **Tasks:**
-  - Build recipe import from TheMealDB
-  - Implement data transformation logic
-  - Create batch import functionality
-  - Add duplicate detection
-
-**ISSUE-018: Recipe Caching Strategy**
-- **Assignee:** Backend Dev 2
-- **Story Points:** 3
+**ISSUE-019: Recipe Favorites & Collections**
+- Add favorites toggle to recipe cards
+- Create favorites view screen
+- Implement collections/categories for organizing recipes
 - **Dependencies:** ISSUE-017
-- **Tasks:**
-  - Implement Redis caching for recipes
-  - Create cache invalidation strategy
-  - Add cache warming for popular recipes
-  - Monitor cache performance
+- **Can work in parallel with:** Next phase issues
 
-**ISSUE-019: Database Optimization**
-- **Assignee:** DevOps Engineer
-- **Story Points:** 3
-- **Dependencies:** ISSUE-013
-- **Tasks:**
-  - Add database indexes for performance
-  - Create database seed scripts
-  - Set up database monitoring
-  - Implement backup strategy
+---
 
-**ISSUE-020: API Integration Layer - Mobile**
-- **Assignee:** Senior Dev 2
-- **Story Points:** 3
-- **Dependencies:** ISSUE-011, ISSUE-013
-- **Tasks:**
-  - Set up React Query for API state management
-  - Create API client with error handling
-  - Implement offline support strategy
-  - Add request/response interceptors
+### Phase 4: Inventory Management (Week 6)
 
-**Week 2 Total Story Points:** 38 points
+**ISSUE-020: Inventory Schema & API**
+- Implement Inventory model
+- Create inventory endpoints (GET, PUT /api/inventory)
+- Create add ingredient endpoint (POST /api/inventory/ingredient)
+- Create remove ingredient endpoint (DELETE /api/inventory/ingredient/:name)
+- Add expiration date tracking
+- **Dependencies:** ISSUE-005
+- **Can work in parallel with:** ISSUE-021
 
-### Week 3: Inventory Management & Custom Recipes
-**Sprint Goal:** Implement ingredient inventory tracking and custom recipe creation
-**Team Capacity:** 10 developers × 40 hours = 400 hours
+**ISSUE-021: Inventory Mobile Interface**
+- Create inventory list screen
+- Implement add ingredient form (name, quantity, unit, expiration date)
+- Create edit/delete functionality
+- Add expiration alerts and warnings
+- Implement ingredient categorization (produce, dairy, meat, etc.)
+- **Dependencies:** ISSUE-006, ISSUE-020
+- **Can work in parallel with:** ISSUE-020
 
-#### GitHub Issues:
+**ISSUE-022: Inventory-Recipe Integration**
+- Add "available ingredients" indicator on recipe cards
+- Highlight missing ingredients in recipe detail view
+- Create "recipes you can make" filter
+- **Dependencies:** ISSUE-021, ISSUE-017, ISSUE-016
+- **Can work in parallel with:** Next phase issues
 
-**ISSUE-021: Inventory Database Schema & API**
-- **Assignee:** Backend Dev 2
-- **Story Points:** 4
-- **Dependencies:** ISSUE-019
-- **Tasks:**
-  - Design inventory database schema
-  - Create inventory CRUD endpoints
-  - Implement expiration date tracking
-  - Add quantity management API
+---
 
-**ISSUE-022: Inventory Mobile Interface**
-- **Assignee:** Mobile Dev 1
-- **Story Points:** 5
-- **Dependencies:** ISSUE-021, ISSUE-020
-- **Tasks:**
-  - Create inventory input screens
-  - Implement barcode scanning (future prep)
-  - Build inventory list with editing
-  - Add expiration alerts UI
+### Phase 5: AI Infrastructure & Meal Planning (Weeks 7-9)
 
-**ISSUE-023: Custom Recipe Creation Backend**
-- **Assignee:** Backend Dev 1
-- **Story Points:** 4
-- **Dependencies:** ISSUE-013
-- **Tasks:**
-  - Create custom recipe endpoints
-  - Implement image upload functionality
-  - Add recipe validation logic
-  - Create recipe management API
+#### Parallel Track A: AI Backend
+**ISSUE-023: AWS Bedrock Integration**
+- Set up AWS Bedrock SDK
+- Configure Claude-3 model access
+- Implement prompt engineering utilities
+- Add token usage tracking for cost management
+- Create fallback error handling
+- **Dependencies:** ISSUE-001
+- **Can work in parallel with:** ISSUE-024, ISSUE-025
 
-**ISSUE-024: Custom Recipe Creation Mobile**
-- **Assignee:** Mobile Dev 2
-- **Story Points:** 5
-- **Dependencies:** ISSUE-023, ISSUE-016
-- **Tasks:**
-  - Build recipe creation form
-  - Implement ingredient input interface
-  - Add image picker and upload
-  - Create recipe editing screens
+**ISSUE-024: Vector Database Setup**
+- Set up MongoDB Vector Search or Pinecone
+- Create recipe embedding generation
+- Implement similarity search functionality
+- Index existing recipes
+- **Dependencies:** ISSUE-013, ISSUE-023
+- **Can work in parallel with:** ISSUE-023, ISSUE-025
 
-**ISSUE-025: Ingredient Suggestion Algorithm**
-- **Assignee:** Senior Dev 1
-- **Story Points:** 5
-- **Dependencies:** ISSUE-021, ISSUE-018
-- **Tasks:**
-  - Implement ingredient matching algorithm
-  - Create recipe suggestion engine
-  - Add filtering by ingredient availability
-  - Optimize suggestion performance
+**ISSUE-025: RAG Service Implementation**
+- Create RAG service class
+- Implement recipe retrieval based on user context
+- Build meal plan generation prompt
+- Integrate user preferences, inventory, and schedule
+- Add reasoning/explanation generation
+- **Dependencies:** ISSUE-023, ISSUE-024
+- **Can work in parallel with:** ISSUE-023, ISSUE-024
 
-**ISSUE-026: Suggestion Display Interface**
-- **Assignee:** Mobile Dev 3
-- **Story Points:** 3
-- **Dependencies:** ISSUE-025, ISSUE-016
-- **Tasks:**
-  - Create suggestion display screens
-  - Implement suggestion filtering UI
-  - Add "missing ingredients" display
-  - Create suggestion interaction flows
+**ISSUE-026: Meal Plan Schema & API**
+- Implement MealPlan model
+- Create meal plan generation endpoint (POST /api/meal-plans/generate)
+- Create get meal plan endpoint (GET /api/meal-plans?weekStartDate=)
+- Create update meal plan endpoint (PUT /api/meal-plans/:id)
+- Create meal status update endpoint (PUT /api/meal-plans/:id/meal-status)
+- Create feedback endpoint (POST /api/meal-plans/:id/feedback)
+- **Dependencies:** ISSUE-005, ISSUE-025
+- **Can work in parallel with:** ISSUE-027
 
-**ISSUE-027: Inventory-Recipe Integration**
-- **Assignee:** Backend Dev 2
-- **Story Points:** 4
-- **Dependencies:** ISSUE-021, ISSUE-025
-- **Tasks:**
-  - Connect inventory with recipe suggestions
-  - Implement ingredient usage tracking
-  - Create inventory update workflows
-  - Add bulk ingredient operations
+**ISSUE-027: AI Meal Plan Generation Service**
+- Integrate RAG service with meal plan API
+- Implement meal plan generation logic
+- Consider user preferences, inventory, schedule constraints
+- Generate shopping list from meal plan
+- Calculate estimated costs
+- Provide AI reasoning for recommendations
+- **Dependencies:** ISSUE-025, ISSUE-026
+- **Can work in parallel with:** ISSUE-028
 
-**ISSUE-028: Image Upload Service**
-- **Assignee:** DevOps Engineer
-- **Story Points:** 3
-- **Dependencies:** ISSUE-023
-- **Tasks:**
-  - Set up cloud storage (AWS S3/Cloudinary)
-  - Implement image optimization
-  - Create upload security policies
-  - Add image CDN configuration
+#### Parallel Track B: Schedule Management
+**ISSUE-028: Schedule Management Backend**
+- Create schedule schema within User model
+- Implement time slot management
+- Add conflict detection logic
+- Create availability checking utilities
+- **Dependencies:** ISSUE-010
+- **Can work in parallel with:** ISSUE-026, ISSUE-027, ISSUE-029
 
-**ISSUE-029: Form Components Library**
-- **Assignee:** Frontend Dev 1
-- **Story Points:** 3
-- **Dependencies:** ISSUE-007
-- **Tasks:**
-  - Create advanced form components
-  - Implement multi-step form wizard
-  - Add form validation components
-  - Create ingredient input components
+**ISSUE-029: Schedule Management Mobile**
+- Create schedule input screen
+- Implement time pickers for available cooking slots
+- Add day-by-day schedule builder
+- Show schedule visualization (calendar/timeline view)
+- Add conflict alerts
+- **Dependencies:** ISSUE-011, ISSUE-028
+- **Can work in parallel with:** ISSUE-028, ISSUE-030
 
-**ISSUE-030: Data Synchronization**
-- **Assignee:** Frontend Dev 2
-- **Story Points:** 3
-- **Dependencies:** ISSUE-020, ISSUE-027
-- **Tasks:**
-  - Implement real-time data sync
-  - Add optimistic updates
-  - Create conflict resolution
-  - Add offline data persistence
+#### Parallel Track C: Meal Plan Mobile
+**ISSUE-030: Meal Plan Mobile Interface**
+- Create weekly meal plan view
+- Implement day-by-day view
+- Create meal cards with recipe info
+- Add meal status tracking (planned, prepped, cooked, eaten, skipped)
+- Show AI reasoning/explanation
+- **Dependencies:** ISSUE-006, ISSUE-026
+- **Can work in parallel with:** ISSUE-029, ISSUE-031
 
-**Week 3 Total Story Points:** 39 points
+**ISSUE-031: Meal Plan Generation Flow**
+- Create meal plan generation screen
+- Add loading states and progress indicators
+- Implement meal plan preview before saving
+- Add regeneration/alternative suggestion options
+- Allow manual meal swapping
+- **Dependencies:** ISSUE-030
+- **Can work in parallel with:** ISSUE-032
 
-### Week 4-9: Remaining Sprints Summary
+**ISSUE-032: Shopping List Mobile Interface**
+- Create shopping list screen from meal plan
+- Group ingredients by category
+- Add check-off functionality
+- Show estimated costs
+- Implement list sharing functionality
+- **Dependencies:** ISSUE-030
+- **Can work in parallel with:** ISSUE-031
 
-**Note:** Following the same GitHub issue structure for remaining weeks. Each week includes 35-40 story points distributed across the 10-person team.
+---
 
-#### Week 4: Schedule Integration & AI Setup (38 points)
-- Schedule management UI/API (Mobile Dev 1, Backend Dev 1)
-- AI infrastructure setup (Senior Dev 1, Backend Dev 2)
-- Meal plan data structures (Backend Dev 2, Mobile Dev 2)
-- Basic meal plan generation (Senior Dev 2, Mobile Dev 3)
+### Phase 6: Cost Tracking & External APIs (Weeks 10-11)
 
-#### Week 5: AI Meal Planning & Shopping Lists (40 points)
-- RAG system implementation (Senior Dev 1, Backend Dev 1)
-- AI prompt engineering (Senior Dev 2)
-- Shopping list generation (Backend Dev 2, Mobile Dev 1)
-- Meal plan optimization (Mobile Dev 2, Frontend Dev 1)
+#### Parallel Track A: Pricing Integration
+**ISSUE-033: Walmart API Integration**
+- Set up Walmart API client
+- Implement product search by ingredient
+- Fetch pricing data
+- Create cost calculation utilities
+- Add budget tracking logic
+- **Dependencies:** ISSUE-001
+- **Can work in parallel with:** ISSUE-034, ISSUE-035
 
-#### Week 6: Cost Tracking & External APIs (36 points)
-- Walmart API integration (Backend Dev 1, DevOps)
-- Google Maps integration (Backend Dev 2, Mobile Dev 3)
-- Cost tracking UI (Mobile Dev 1, Frontend Dev 2)
-- Performance optimization (Senior Dev 1, Senior Dev 2)
+**ISSUE-034: Cost Tracking Backend**
+- Add cost fields to shopping list items
+- Create cost calculation endpoints
+- Implement budget tracking API
+- Add spending analytics
+- **Dependencies:** ISSUE-026, ISSUE-033
+- **Can work in parallel with:** ISSUE-033, ISSUE-035
 
-#### Week 7: Advanced Features & Mobile Optimization (38 points)
-- Leftovers management (Mobile Dev 2, Backend Dev 1)
-- Analytics dashboard (Mobile Dev 3, Frontend Dev 1)
-- Push notifications (Mobile Dev 1, DevOps)
-- Camera integration (Mobile Dev 2, Frontend Dev 2)
+**ISSUE-035: Cost Tracking Mobile UI**
+- Create budget overview screen
+- Display cost breakdown by meal/ingredient
+- Show weekly/monthly spending trends
+- Add budget alerts
+- Create spending reports
+- **Dependencies:** ISSUE-032, ISSUE-034
+- **Can work in parallel with:** ISSUE-033, ISSUE-034
 
-#### Week 8: Testing & Quality Assurance (35 points)
-- Unit testing (All developers - 2 points each)
-- Integration testing (Senior Dev 1, Senior Dev 2)
-- E2E testing (DevOps, Mobile Dev 3)
-- Performance testing (Backend Dev 1, Backend Dev 2)
-- Security audit (Senior Dev 1, DevOps)
+#### Parallel Track B: Maps & Route Planning
+**ISSUE-036: Google Maps API Integration**
+- Set up Google Maps SDK
+- Implement store location search
+- Create route optimization logic
+- Calculate distances and travel times
+- **Dependencies:** ISSUE-001
+- **Can work in parallel with:** ISSUE-033, ISSUE-037
 
-#### Week 9: Deployment & Launch (32 points)
-- Production deployment (DevOps, Senior Dev 1)
-- App store submission (Mobile Dev 1, Senior Dev 2)
-- Documentation (Frontend Dev 1, Frontend Dev 2)
-- Monitoring setup (DevOps, Backend Dev 1)
-- Launch preparation (All team members)
+**ISSUE-037: Shopping Trip Planning**
+- Create store comparison screen
+- Show stores on map with prices
+- Implement route planning interface
+- Add multi-store trip optimization
+- **Dependencies:** ISSUE-035, ISSUE-036
+- **Can work in parallel with:** ISSUE-036, ISSUE-038
 
-### Team Workload Distribution
+#### Parallel Track C: Notifications & Leftovers
+**ISSUE-038: Push Notifications System**
+- Set up Expo Notifications
+- Implement notification scheduling
+- Create meal prep reminders based on schedule
+- Add expiration date alerts
+- Create meal time reminders
+- **Dependencies:** ISSUE-002
+- **Can work in parallel with:** ISSUE-036, ISSUE-037, ISSUE-039
 
-| Role | Weeks 1-3 | Weeks 4-6 | Weeks 7-9 | Total Points |
-|------|-----------|-----------|-----------|-------------|
-| Senior Dev 1 (Tech Lead) | 12 | 15 | 12 | 39 |
-| Senior Dev 2 (Tech Lead) | 8 | 12 | 10 | 30 |
-| Mobile Dev 1 | 15 | 12 | 15 | 42 |
-| Mobile Dev 2 | 12 | 15 | 12 | 39 |
-| Mobile Dev 3 | 11 | 12 | 15 | 38 |
-| Backend Dev 1 | 16 | 15 | 10 | 41 |
-| Backend Dev 2 | 13 | 15 | 8 | 36 |
-| Frontend Dev 1 | 11 | 8 | 12 | 31 |
-| Frontend Dev 2 | 6 | 8 | 10 | 24 |
-| DevOps Engineer | 10 | 8 | 15 | 33 |
-| **Total** | **114** | **120** | **119** | **353** |
+**ISSUE-039: Leftovers Management**
+- Implement Leftovers schema
+- Create leftovers tracking API
+- Add leftover logging in meal plan
+- Create leftovers screen in mobile app
+- Integrate leftovers into meal plan generation
+- Suggest recipes using leftovers
+- **Dependencies:** ISSUE-026, ISSUE-030
+- **Can work in parallel with:** ISSUE-038, ISSUE-040
 
-### GitHub Project Management Structure
+**ISSUE-040: Consumption Analytics**
+- Track meal completion rates
+- Analyze consumption patterns
+- Calculate grocery consumption speed
+- Provide insights and recommendations
+- Create analytics dashboard
+- **Dependencies:** ISSUE-026, ISSUE-039
+- **Can work in parallel with:** ISSUE-039
 
-#### Milestones
-- **Week 1:** Foundation Setup
-- **Week 2:** User & Recipe Core
-- **Week 3:** Inventory & Custom Recipes
-- **Week 4:** Schedule & AI Infrastructure
-- **Week 5:** AI Meal Planning
-- **Week 6:** External Integrations
-- **Week 7:** Advanced Features
-- **Week 8:** Testing & QA
-- **Week 9:** Deployment & Launch
+---
 
-#### Labels
-- `frontend` - React Native mobile development
-- `backend` - Express.js API development
-- `database` - MongoDB schema and queries
-- `ai` - AI/ML related features
-- `external-api` - Third-party API integrations
-- `testing` - Unit, integration, and E2E tests
-- `devops` - CI/CD, deployment, infrastructure
-- `ui/ux` - User interface and experience
-- `security` - Security-related tasks
-- `documentation` - Technical and user documentation
-- `bug` - Bug fixes
-- `enhancement` - Feature improvements
-- `critical` - High priority issues
-- `blocked` - Issues waiting on dependencies
+### Phase 7: Polish & Enhancement (Week 11)
 
-#### Sprint Planning Process
-1. **Sprint Planning Meeting** (Monday, 2 hours)
-   - Review previous sprint
-   - Assign issues to team members
-   - Discuss dependencies and blockers
-   - Set sprint goals
+**ISSUE-041: Image Upload Service**
+- Set up cloud storage (AWS S3 or Cloudinary)
+- Implement image upload API
+- Add image optimization and resizing
+- Create CDN integration
+- **Dependencies:** ISSUE-001
+- **Can work in parallel with:** ISSUE-042, ISSUE-043
 
-2. **Daily Standups** (15 minutes)
-   - What did you complete yesterday?
-   - What will you work on today?
-   - Any blockers or dependencies?
+**ISSUE-042: Camera Integration**
+- Implement camera access for recipe photos
+- Add barcode scanning for ingredients
+- Create photo gallery for recipes
+- **Dependencies:** ISSUE-002, ISSUE-041
+- **Can work in parallel with:** ISSUE-041, ISSUE-043
 
-3. **Sprint Review** (Friday, 1 hour)
-   - Demo completed features
-   - Review sprint metrics
-   - Identify areas for improvement
+**ISSUE-043: Offline Support**
+- Implement AsyncStorage for offline data
+- Add offline sync queue
+- Create conflict resolution logic
+- Cache recipes and meal plans locally
+- **Dependencies:** ISSUE-006
+- **Can work in parallel with:** ISSUE-041, ISSUE-042
 
-4. **Retrospective** (Friday, 30 minutes)
-   - What went well?
-   - What could be improved?
-   - Action items for next sprint
+**ISSUE-044: Performance Optimization**
+- Optimize bundle size with Metro
+- Implement lazy loading for screens
+- Add image caching and optimization
+- Optimize database queries with indexes
+- Implement React Query caching strategies
+- **Dependencies:** All previous issues
+- **Can work in parallel with:** ISSUE-045
 
-### Risk Management for 10-Person Team
+**ISSUE-045: UI/UX Polish**
+- Add animations and transitions
+- Implement loading states and skeletons
+- Create empty states
+- Add haptic feedback
+- Improve error messages
+- **Dependencies:** All mobile UI issues
+- **Can work in parallel with:** ISSUE-044
 
-1. **Communication Overhead**
-   - Use async communication (GitHub, Slack)
-   - Clear documentation and issue descriptions
-   - Regular sync meetings for dependencies
+---
 
-2. **Code Conflicts**
-   - Feature branch workflow
-   - Small, frequent commits
-   - Code review requirements
-   - Automated merge conflict detection
+### Phase 8: Testing & Deployment (Week 12)
 
-3. **Dependency Management**
-   - Clear issue dependencies in GitHub
-   - Buffer time for integration tasks
-   - Parallel development where possible
+**ISSUE-046: Testing Suite**
+- Write unit tests for backend services
+- Create integration tests for API endpoints
+- Add component tests for mobile UI
+- Test AI meal plan generation
+- Perform cross-platform testing (iOS/Android)
+- **Dependencies:** All previous issues
+- **Can work in parallel with:** ISSUE-047
 
-4. **Quality Assurance**
-   - Mandatory code reviews (2 approvals)
-   - Automated testing in CI/CD
-   - Definition of Done checklist
-   - Regular QA testing cycles
+**ISSUE-047: Security & Performance Audit**
+- Review authentication and authorization
+- Test API security and rate limiting
+- Validate input sanitization
+- Check for data encryption
+- Perform load testing
+- **Dependencies:** All previous issues
+- **Can work in parallel with:** ISSUE-046
 
-### Success Metrics
+**ISSUE-048: Documentation**
+- Write API documentation (Swagger/OpenAPI)
+- Create user guide and tutorials
+- Document architecture and deployment
+- Add inline code documentation
+- Create README files
+- **Dependencies:** All previous issues
+- **Can work in parallel with:** ISSUE-046, ISSUE-047
 
-- **Velocity:** Target 35-40 story points per week
-- **Code Quality:** 90%+ test coverage, 0 critical security issues
-- **Team Efficiency:** <2 hours average PR review time
-- **Delivery:** On-time milestone completion
-- **Technical Debt:** <10% of sprint capacity for bug fixes
+**ISSUE-049: Production Deployment**
+- Deploy backend to Railway/Heroku
+- Configure production environment variables
+- Set up MongoDB Atlas production cluster
+- Configure monitoring and logging
+- **Dependencies:** ISSUE-046, ISSUE-047
+- **Can work in parallel with:** ISSUE-050
+
+**ISSUE-050: Mobile App Build & Release**
+- Configure EAS Build
+- Create iOS and Android production builds
+- Set up app signing
+- Submit to TestFlight and Google Play Console
+- Prepare app store listings
+- **Dependencies:** ISSUE-046, ISSUE-047
+- **Can work in parallel with:** ISSUE-049
+
+---
+
+## Parallel Work Summary
+
+### Maximum Parallelization Opportunities
+
+**Phase 1 (Weeks 1-2):** Up to 6 issues can be worked on simultaneously
+- Backend setup (ISSUE-001, ISSUE-005, ISSUE-008)
+- Mobile setup (ISSUE-002, ISSUE-003, ISSUE-004)
+- External APIs (ISSUE-007)
+
+**Phase 2 (Week 3):** 2 issues in parallel
+- Backend profile API (ISSUE-010)
+- Mobile profile UI (ISSUE-011)
+
+**Phase 3 (Weeks 4-5):** Up to 4 issues in parallel
+- Backend recipe system (ISSUE-013, ISSUE-014, ISSUE-016)
+- Mobile recipe UI (ISSUE-015, ISSUE-017, ISSUE-018)
+
+**Phase 4 (Week 6):** 2 issues in parallel
+- Backend inventory (ISSUE-020)
+- Mobile inventory (ISSUE-021)
+
+**Phase 5 (Weeks 7-9):** Up to 5 issues in parallel
+- AI infrastructure (ISSUE-023, ISSUE-024, ISSUE-025)
+- Meal plan backend (ISSUE-026, ISSUE-027, ISSUE-028)
+- Meal plan mobile (ISSUE-029, ISSUE-030, ISSUE-031, ISSUE-032)
+
+**Phase 6 (Weeks 10-11):** Up to 6 issues in parallel
+- Pricing (ISSUE-033, ISSUE-034, ISSUE-035)
+- Maps (ISSUE-036, ISSUE-037)
+- Notifications & leftovers (ISSUE-038, ISSUE-039, ISSUE-040)
+
+**Phase 7 (Week 11):** Up to 5 issues in parallel
+- All polish issues (ISSUE-041 through ISSUE-045)
+
+**Phase 8 (Week 12):** Up to 4 issues in parallel
+- Testing, documentation, and deployment (ISSUE-046 through ISSUE-050)
+
+---
+
+## Critical Path
+
+The following issues form the critical path and must be completed in order:
+
+1. ISSUE-001 (Backend Setup) → ISSUE-005 (MongoDB) → ISSUE-008 (Auth Backend)
+2. ISSUE-002 (Mobile Setup) → ISSUE-009 (Auth Mobile)
+3. ISSUE-013 (Recipe API) → ISSUE-026 (Meal Plan API) → ISSUE-027 (AI Generation)
+4. ISSUE-023 (AWS Bedrock) → ISSUE-024 (Vector DB) → ISSUE-025 (RAG Service) → ISSUE-027
+5. ISSUE-030 (Meal Plan UI) → ISSUE-031 (Generation Flow) → ISSUE-032 (Shopping List)
+
+All other issues can be scheduled around these critical dependencies.
