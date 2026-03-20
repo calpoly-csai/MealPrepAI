@@ -1,5 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import { createClerkClient } from '@clerk/clerk-sdk-node';
+
+// Initialize Clerk client with backend API
+const clerkClient = createClerkClient({
+  secretKey: process.env.CLERK_SECRET_KEY,
+});
 
 // Extend Express Request to include user info
 declare global {
@@ -7,8 +12,9 @@ declare global {
     interface Request {
       user?: {
         userId: string;
-        sessionId?: string;
-        email?: string;
+        email?: string | null;
+        firstName?: string | null;
+        lastName?: string | null;
         [key: string]: any;
       };
     }
@@ -16,13 +22,16 @@ declare global {
 }
 
 /**
- * Middleware to verify Clerk JWT tokens (RS256 asymmetric signing)
- * Clerk issues JWT tokens signed with RS256, verified using their public keys
+ * Middleware to verify Clerk Session Tokens
+ * Uses Clerk's official SDK for proper RS256 signature verification via JWKS
  * 
- * For development: We decode and validate the token structure from Clerk issuer
- * For production: Implement full RS256 signature verification using Clerk JWKS endpoint
+ * This is the secure, production-ready approach:
+ * - Clerk SDK handles RS256 validation automatically
+ * - Verifies token signature using Clerk's JWKS endpoint
+ * - Handles token expiration checks
+ * - Validates token issuer and audience
  */
-export const verifyClerkJWT = async (
+export const verifyClerkToken = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -37,60 +46,45 @@ export const verifyClerkJWT = async (
 
     const token = authHeader.substring(7); // Remove 'Bearer ' prefix
     
-    console.log('[AUTH] Verifying token...');
+    console.log('[AUTH] Verifying token with Clerk...');
 
-    // Decode the token (without verification) to examine its claims
-    // Clerk tokens are RS256 (asymmetric), so we can't verify with a symmetric key
-    const decoded = jwt.decode(token, { complete: true });
+    // Use Clerk's SDK to verify the token - handles RS256 validation automatically
+    const session = await clerkClient.verifyToken(token);
     
-    if (!decoded) {
-      throw new Error('Invalid token format');
+    if (!session?.sub) {
+      throw new Error('Invalid token: missing user ID');
     }
 
-    const payload = decoded.payload as any;
-    const header = decoded.header as any;
+    // Fetch complete user data from Clerk for additional security context
+    const clerkUser = await clerkClient.users.getUser(session.sub);
 
-    // Validate token structure
-    if (header.alg !== 'RS256') {
-      throw new Error(`Unexpected token algorithm: ${header.alg}, expected RS256`);
-    }
+    console.log('[AUTH] ✓ Token verified - User:', session.sub);
 
-    if (!payload.sub) {
-      throw new Error('Token missing "sub" (subject/user ID) claim');
-    }
-
-    if (!payload.iss) {
-      throw new Error('Token missing "iss" (issuer) claim');
-    }
-
-    // Verify this is from Clerk
-    if (!payload.iss.includes('clerk')) {
-      throw new Error(`Token issuer ${payload.iss} does not appear to be from Clerk`);
-    }
-
-    console.log('[AUTH] ✓ Token verified - User:', payload.sub);
-
-    // Attach user info to request
-    // Note: Email is not included in Clerk JWT by default - use Clerk's user object on frontend
+    // Attach comprehensive user info to request from Clerk
     req.user = {
-      userId: payload.sub || '',
-      sessionId: payload.sid,
-      firstName: payload.given_name,
-      lastName: payload.family_name,
+      userId: session.sub,
+      email: clerkUser.emailAddresses?.[0]?.emailAddress,
+      firstName: clerkUser.firstName,
+      lastName: clerkUser.lastName,
     };
 
     next();
   } catch (error: any) {
     console.error('[AUTH] Token verification failed:', error.message);
 
+    let statusCode = 401;
     let message = 'Invalid or expired token';
-    if (error.message.includes('Invalid token format')) {
-      message = 'Token format is invalid';
-    } else if (error.message.includes('does not appear to be from Clerk')) {
-      message = 'Token is not from Clerk';
+
+    // Provide specific error messages for debugging (in development only)
+    if (error.message?.includes('Token expired')) {
+      message = 'Token has expired';
+    } else if (error.message?.includes('Invalid token')) {
+      message = 'Token is invalid';
+    } else if (error.message?.includes('missing user ID')) {
+      message = 'Token missing required user information';
     }
 
-    res.status(401).json({ 
+    res.status(statusCode).json({ 
       error: message,
       details: process.env.NODE_ENV === 'development' ? error.message : undefined,
     });
@@ -99,7 +93,7 @@ export const verifyClerkJWT = async (
 
 /**
  * Middleware to protect routes - requires authenticated user
- * Use after verifyClerkJWT middleware
+ * Use after verifyClerkToken middleware
  */
 export const requireAuth = (
   req: Request,
@@ -112,6 +106,46 @@ export const requireAuth = (
   }
 
   next();
+};
+
+/**
+ * Optional auth middleware - adds user data if authenticated, but doesn't require it
+ * Useful for endpoints that can be used by both authenticated and unauthenticated users
+ */
+export const optionalAuth = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (authHeader?.startsWith('Bearer ')) {
+      const token = authHeader.substring(7);
+      
+      try {
+        const session = await clerkClient.verifyToken(token);
+        
+        if (session?.sub) {
+          const clerkUser = await clerkClient.users.getUser(session.sub);
+          req.user = {
+            userId: session.sub,
+            email: clerkUser.emailAddresses?.[0]?.emailAddress,
+            firstName: clerkUser.firstName,
+            lastName: clerkUser.lastName,
+          };
+        }
+      } catch (error) {
+        // Silently continue if token is invalid - this is optional auth
+        console.log('[AUTH] Optional auth token verification skipped');
+      }
+    }
+
+    next();
+  } catch (error) {
+    // Continue even if optional auth fails
+    next();
+  }
 };
 
 /**
@@ -137,7 +171,7 @@ export const sessionManagement = async (
 
     next();
   } catch (error) {
-    console.error('Session management error:', error);
+    console.error('[AUTH] Session management error:', error);
     next(error);
   }
 };

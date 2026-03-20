@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { asyncHandler } from '../middleware/errorHandler';
-import { verifyClerkJWT, requireAuth } from '../middleware/auth';
+import { verifyClerkToken, requireAuth, optionalAuth } from '../middleware/auth';
 
 const router = Router();
 
@@ -42,22 +42,27 @@ router.get('/auth/info', asyncHandler(async (req: Request, res: Response) => {
 }));
 
 /**
- * Protected route - Get current user info from Clerk token
+ * Protected route - Get current user info from Clerk
  * GET /api/auth/me
  * Requires: Authorization: Bearer <clerk_token>
+ * 
+ * This endpoint uses Clerk's backend API to fetch complete user information,
+ * ensuring you always have the most up-to-date user data
  */
 router.get(
   '/auth/me',
-  verifyClerkJWT,
+  verifyClerkToken,
   requireAuth,
   asyncHandler(async (req: Request, res: Response) => {
     res.json({
       success: true,
       user: {
         userId: req.user?.userId,
+        email: req.user?.email,
         firstName: req.user?.firstName,
         lastName: req.user?.lastName,
         lastActivity: req.user?.lastActivity,
+        authenticatedWith: 'Clerk SDK (Secure)',
       },
     });
   })
@@ -67,17 +72,20 @@ router.get(
  * Verification endpoint - test Clerk token validation
  * POST /api/auth/verify
  * Requires: Authorization: Bearer <clerk_token>
+ * 
+ * This endpoint verifies the token is valid and authenticated with Clerk
  */
 router.post(
   '/auth/verify',
-  verifyClerkJWT,
+  verifyClerkToken,
   requireAuth,
   asyncHandler(async (req: Request, res: Response) => {
     res.json({
       success: true,
-      message: 'Authentication verified with Clerk',
+      message: 'Authentication verified with Clerk SDK',
       user: {
         userId: req.user?.userId,
+        email: req.user?.email,
       },
       tokenValid: true,
     });

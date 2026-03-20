@@ -14,7 +14,7 @@
    ```
 3. Start the backend server:
    ```bash
-   node dist/index.js
+   npm run dev
    ```
 
 ### Frontend
